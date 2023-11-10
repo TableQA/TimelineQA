@@ -139,7 +139,6 @@ def main(argv):
         elif opt == "-d":
             directories = list(arg.split(" "))
 
-        queryfile = 'queryfile.csv'
         for d in directories:
             queries_data = {
                 'q_id': [],
