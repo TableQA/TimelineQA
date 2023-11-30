@@ -41,7 +41,7 @@ def csv2data(query_dir):
             datum['phase'] = line['q_id']
             datum['question'] = line['question']
             datum['answer_column'] = line['answer_column']
-            #TODO every table.
+            #TODO text to table.
             #for csv in line['datafiles'].split(','):
             # datum['table'] = csv2json(line['datafiles'].split(',')[0], query_dir)
             datum['sql'] = line['query']
@@ -53,14 +53,14 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hl:d:", ["log=", "directories="])
     except getopt.GetoptError:
-        print("python multihopDataset.py -h -d <directories> -l <Lifelog name>")
+        print("python multihopDataset.py -h -d <directory> -l <Lifelog name>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
             print()
-            print("python multihopDataset.py -h -d <directories> -l <Lifelog name>")
-            # print("query file contains (sqlquery, inputfilename) pairs. assumed to be in directories")
-            print("directories is a list of directories relative to the current directory where the sqlquery will be executed against the inputfilename")
+            print("python multihopDataset.py -h -d <directory> -l <Lifelog name>")
+            print("Lifelog name represents the type and the number of lifelog. assumed to be in directory")
+            print("directory contains lifelogs and queries")
             sys.exit()
         elif opt == "-l":
             log = arg

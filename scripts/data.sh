@@ -6,7 +6,7 @@ do
         -l "sparse-$i" \
         -d benchmark
 done
-for i in {21..99}
+for i in {0..99}
 do
     python multihopQA/multihopDataset.py \
         -l "medium-$i" \
