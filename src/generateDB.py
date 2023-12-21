@@ -13,8 +13,11 @@ import json, csv
 import pandas as pd
 
 from persona_generator import generate_persona, FEMALE_NAMES_DB, MALE_NAMES_DB, PETS_NAMES_DB, HOBBIES_DB, EXERCISE_DB, EXERCISE_DB, EXCUR_ACTIVITIES, profession_dict, location_dict
+from persona_generator import *
 from episodeGenerator import *
 
+# from src.settings import *
+# from src import settings
 import settings
 
 #generates and adds an episode of type episode according to persona into db
@@ -66,7 +69,7 @@ def main(argv):
     settings.init()
 
     #TODO: add path to data directory
-    templatefilename = "../data/templates.json"
+    templatefilename = "./data/templates.json"
     #default outputfile name and seed
     outfile = "default.json"
     settings.seed = 12345
@@ -127,19 +130,19 @@ def main(argv):
     #read some data files
     settings.city_country_list = []
     #TODO: add path to data directory
-    with open("../data/cities.csv", "r") as f:
+    with open("./data/cities.csv", "r") as f:
         obj = csv.reader(f, delimiter=",")
         for row in obj:
             settings.city_country_list.append(row)
 
     settings.college_list = []
-    with open("../data/colleges.csv", "r") as f:
+    with open("./data/colleges.csv", "r") as f:
         obj = csv.reader(f, delimiter=",")
         for row in obj:
             settings.college_list.append(row)
 
     settings.major_list = []
-    with open("../data/majors.csv", "r") as f:
+    with open("./data/majors.csv", "r") as f:
         obj = csv.reader(f)
         for row in obj:
             settings.major_list.append(row)
@@ -241,7 +244,10 @@ def main(argv):
     if settings.verbose:
         print("Episodic DB:")
         pprint(episodicDB)
-
+    
+    #sort in timeline (we can't relocate right after birth)
+    episodicDB = dict(sorted(episodicDB.items()))
+    
     with open(directory+"/"+outfile, 'w') as f:
         json.dump(episodicDB, f)
 

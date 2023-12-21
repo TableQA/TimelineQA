@@ -239,6 +239,10 @@ def generateTripEpisodes(db, persona, episode, year):
         people_dict[people_group] = ["myself"]
     people = random.sample(people_dict[people_group], random.randint(1, minimumOf(3, len(people_dict[people_group]))))
 
+    #len (people) should be nonzero...
+    if len(people) == 0:
+        people = ["myself"]    
+
     # for tracking to avoid visiting the same city 
     city_list = list(travel_db.keys())  
     count = persona["trips_per_year"]
@@ -324,8 +328,8 @@ def getDay():
 
 def generateSchoolMove(db, persona, move_date, college_or_gradschool):
     move_date_obj = datetime.datetime.strptime(move_date, '%Y/%m/%d').date()
-    if move_date_obj.year > settings.current_year:
-        return
+    # if move_date_obj.year > settings.current_year:
+    #     return
     if move_date not in db:
         db[move_date] = {}
 
@@ -406,8 +410,8 @@ def generateSchoolMove(db, persona, move_date, college_or_gradschool):
 
 def generateJobMove(db, persona, move_date, num):
     move_date_obj = datetime.datetime.strptime(move_date, '%Y/%m/%d').date()
-    if move_date_obj.year > settings.current_year:
-        return
+    # if move_date_obj.year > settings.current_year:
+    #     return
     location = random.choice(settings.cities)
     people = []
     candidate_people = []
@@ -490,8 +494,8 @@ def generateMoveEpisodes(db, persona, episode):
 def generateMarriageEpisode(db, persona, episode, marriage_index):
     married_date = yearly_month_date_generator(persona["birth_year"] + persona["married"][marriage_index])
     married_date_obj = datetime.datetime.strptime(married_date, '%Y/%m/%d').date()
-    if married_date_obj.year > settings.current_year:
-        return
+    # if married_date_obj.year > settings.current_year:
+    #     return
     if married_date not in db:
         db[married_date] = {}
 
@@ -652,11 +656,15 @@ def generateBakeOrCookEpisode(db, persona, item_list, bake_or_cook, date_str):
                 people_dict[people_group] = ["myself"]
             people = random.sample(people_dict[people_group], random.randint(1,minimumOf(4, len(people_dict[people_group])))) 
 
+            #len (people) should be nonzero...
+            if len(people) == 0:
+                people = ["myself"]
+                
             people_str = ", ".join(people)
             cooked_item_number = random.randint(1, 3)
             cooked_list = random.sample(item_list, cooked_item_number)
             cuisine_string = ", ".join(cooked_list)
-            location = random.choice(["my place"])
+            location = random.choice(["my place", "other's place"]) if people_str != "myself" else "my place"
 
             template_based = []
 
@@ -758,6 +766,10 @@ def generateHobbyEpisode(db, persona, episode, date_str):
             if len(people_dict[people_group]) == 0:
                 people_dict[people_group] = ["myself"]
             people = random.sample(people_dict[people_group], random.randint(1, minimumOf(3, len(people_dict[people_group]))))
+            
+            #len (people) should be nonzero...
+            if len(people) == 0:
+                people = ["myself"]
 
             people_string = ", ".join(people)
             hobbies = random.choice(persona["hobbies"])
@@ -801,6 +813,11 @@ def generateGroceryShoppingEpisode(db, persona, episode, date_str):
         if len(people_dict[people_group]) == 0:
             people_dict[people_group] = ["myself"]
         people = random.sample(people_dict[people_group], random.randint(1, len(people_dict[people_group])))
+        
+        #len (people) should be nonzero...
+        if len(people) == 0:
+            people = ["myself"]
+        
         people_string = ", ".join(people)
 
         fruits_l = random.sample(settings.fruit_list, random.randint(1,4))
@@ -945,7 +962,11 @@ def generateMealEpisode(db, persona, episode, mealtype, date_str):
     people_group = flip(settings.people_group, settings.people_group_prob)
     if len(people_dict[people_group]) == 0:
         people_dict[people_group] = ["myself"]
-    people = random.sample(people_dict[people_group], random.randint(1, len(people_dict[people_group])))
+    people = random.sample(people_dict[people_group], random.randint(0, len(people_dict[people_group])))
+    #len (people) should be nonzero...
+    if len(people) == 0:
+        people = ["myself"]
+    
     people_string = ", ".join(people)
 
     if settings.current_age + persona["birth_year"] >= 2005 and settings.current_age >= 13:
@@ -955,7 +976,7 @@ def generateMealEpisode(db, persona, episode, mealtype, date_str):
             foodtype = random.choice(settings.breakfast_list)
         else:
             foodtype = random.choice(settings.lunchdinner_list)
-
+        
         format_dict = {"mealtype":mealtype, "foodtype":foodtype, "date":date_str, "people_string":people_string}
         templates = settings.template_dict[episode]["templates"]
         num = str(getATemplate(templates))
