@@ -1,4 +1,3 @@
-src/benchmark
-Pipfile
 benchmark
 example
+__pycache__
