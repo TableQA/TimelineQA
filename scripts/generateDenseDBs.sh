@@ -6,7 +6,7 @@
 # LICENSE file in the root directory of this source tree.
 
 
-for i in {0..22}
+for i in {0..40}
 do
     echo "Generating dense-$i.json year=2022, seed=$((12345+$i))..."
     \rm -rf benchmark/dense-$i
