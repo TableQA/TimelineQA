@@ -251,7 +251,7 @@ def main(argv):
                     gold_table = rearrange_table(gold_table)
 
                     gold_table['name'] = d+'-'+queryid+'_table'
-                    gold_table['id'] = d.strip('benchmark/')+queryid
+                    gold_table['id'] = d.split("/")[1]+queryid
 
                     table_file.write(json.dumps(gold_table)+'\n')
 
